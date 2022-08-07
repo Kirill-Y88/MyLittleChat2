@@ -15,8 +15,6 @@ import java.util.ResourceBundle;
 public class ClientController implements Initializable {
 
     private NetWork netWork;
-//    private String login;
-//    private String password;
     private ObservableList<String> clientsList;
 
     private String loginRecipient = "";
@@ -28,8 +26,6 @@ public class ClientController implements Initializable {
 
     @FXML
     protected void onHelloButtonClick() {
-        System.out.println("button press");
-        //   welcomeText.setText("Welcome to JavaFX Application!");
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "выбрана отправка сообщений для общего чата", ButtonType.OK);
             loginRecipient = "";
@@ -59,15 +55,6 @@ public class ClientController implements Initializable {
     ListView<String> clientsView;
 
 
-
-
-//    @FXML
-//    protected void sendMsg(){
-//        System.out.println("button press");
-//        textArea.appendText(fieldMsg.getText() + "\n");
-//        fieldMsg.setText("");
-//    }
-
     @FXML
     protected void connect(){
         String host = this.host.getText();
@@ -85,9 +72,6 @@ public class ClientController implements Initializable {
 
     @FXML
     protected void sendMsg(){
-//        System.out.println("button press");
-//        textArea.appendText(fieldMsg.getText() + "\n");
-//        fieldMsg.setText("");
         String msg;
         if(loginRecipient.equals("")){
             msg = String.format("%s%s%s",
@@ -104,8 +88,6 @@ public class ClientController implements Initializable {
                     ParseMessage.DELIMITER.getTitle());
         }
         netWork.sendMessage(msg);
-        System.out.println("login recipient =" + loginRecipient);
-        //    loginRecipient = "";
     }
 
     @FXML
@@ -132,8 +114,6 @@ public class ClientController implements Initializable {
     }
 
     public void receivingPrivateMsg(String msg){
-        System.out.println("msg =" + msg);
-
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
             alert.showAndWait();
@@ -145,8 +125,6 @@ public class ClientController implements Initializable {
             clientsList.clear();
             clientsList.addAll(clients);
         });
-
-     //   clientsView.setItems(clientsList);
     }
 
     @Override
@@ -162,9 +140,6 @@ public class ClientController implements Initializable {
              loginRecipient = clientsView.getSelectionModel().getSelectedItem();
              fieldMsg.requestFocus();
         }
-
-
     }
-
 
 }

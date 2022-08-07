@@ -21,7 +21,6 @@ public class NetWork {
 
     public void connect(String host, int port){
         try {
-
             socket = new Socket(host,port);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
@@ -31,44 +30,26 @@ public class NetWork {
                 while (true){
                     try {
                         String fullMsg = dataInputStream.readUTF();
-                        System.out.println(" Full msg = " + fullMsg);
                         msg = (fullMsg).split(ParseMessage.DELIMITER.getTitle());
                         if(msg[0].equals(ParseMessage.SENDTO.getTitle())){
-                            System.out.println("Network send to msg" + msg[0] + msg[1]);
                         clientController.receivingPrivateMsg("Message from " + msg[1]);
                         }else if(msg[0].equals(ParseMessage.CLIENTLIST.getTitle())){
-
-                          //  List<String> clientList = List.of(msg);
-                            List<String> clientList = Arrays.asList(msg);
-//                            clientList.remove(0);
+                            String[] clients = Arrays.copyOfRange(msg, 1, msg.length);
+                            clientList = Arrays.asList(clients);
                             clientController.updateClientList(clientList);
-
                         }else {  //это сообщение "для всех"
                             clientController.receivedMsg(msg[0]);
                         }
-                        System.out.println("received msg = " + msg[0]);
-                        clientController.receivedMsg(msg[0] + "test ");
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;
-                    }/*finally {
-                        try {
-                            socket.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }*/
-
-
+                    }
                 }
-
                 try {
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }).start();
 
 

@@ -1,5 +1,8 @@
 package y88.kirill.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,6 +16,7 @@ public class Server {
     private Socket socket;
     private boolean startOn = false;
     private ServerController serverController;
+    private static final Logger log = LoggerFactory.getLogger(Server.class);
 
 
    // private Vector<ClientHandler> clients;
@@ -29,11 +33,10 @@ public class Server {
         new Thread( () -> {
         try {
             serverSocket = new ServerSocket(PORT);
-           // logger.log(Level.ALL,"start");
-            System.out.println("sout start");
+           log.info("Server start");
             while (startOn){
                 socket = serverSocket.accept();
-                System.out.println("sout client Accept");
+                log.info("Server: client Accept");
                 new ClientHandler(this, socket);
             }
         } catch (Exception e) {
@@ -80,16 +83,16 @@ public class Server {
                 clientHandler.getLogin(),
                 msgTo );
         recipient.sendMessage(msg);
+        log.info(clientHandler.getLogin() + " send to " + recipientLogin + ": " + msgTo);
     }
 
     public void sendMsgAll(ClientHandler clientHandler, String msg){
         String msgAll = String.format("%s send: %s \n",clientHandler.getLogin(), msg );
         for (Map.Entry<String, ClientHandler> c: clients.entrySet()  ) {
             c.getValue().sendMessage(msgAll);
-
             serverController.getTextArea().appendText(msgAll);
-            System.out.println("send to = " + msgAll);
         }
+        log.info(clientHandler.getLogin() + " send all: " + msg);
     }
 
     private void sendMsgAll( ){
@@ -97,15 +100,12 @@ public class Server {
         sb.append(ParseMessage.CLIENTLIST.getTitle());
         sb.append(ParseMessage.DELIMITER.getTitle());
         for (Map.Entry<String, ClientHandler> c: clients.entrySet()  ) {
-            System.out.println("clientList = " + c.getKey());
             sb.append(c.getKey());
             sb.append(ParseMessage.DELIMITER.getTitle());
         }
         for (Map.Entry<String, ClientHandler> c: clients.entrySet()  ) {
             c.getValue().sendMessage(sb.toString());
-
             serverController.getTextArea().appendText(sb.toString());
-            System.out.println("send to = " + c.getKey());
         }
     }
 

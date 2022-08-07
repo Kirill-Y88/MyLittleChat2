@@ -9,6 +9,7 @@ module y88.kirill.server {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires slf4j.api;
 
     opens y88.kirill.server to javafx.fxml;
     exports y88.kirill.server;

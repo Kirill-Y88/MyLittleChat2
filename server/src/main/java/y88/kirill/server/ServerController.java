@@ -7,24 +7,23 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class ServerController {
 
     Server server;
-
-
+    private static final Logger log = LoggerFactory.getLogger(ServerController.class);
 
     public ServerController() {
         server = new Server(this);
         serverStart();
     }
 
-    //
+    //todo выпилить
     @FXML
     protected void onHelloButtonClick() {
-        System.out.println("button press");
-     //   welcomeText.setText("Welcome to JavaFX Application!");
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, fieldMsg.getText(), ButtonType.OK);
             alert.showAndWait();
@@ -42,7 +41,6 @@ public class ServerController {
 
     @FXML
     protected void sendMsg(){
-        System.out.println("button press");
         textArea.appendText(fieldMsg.getText() + "\n");
         fieldMsg.setText("");
     }
@@ -53,6 +51,7 @@ public class ServerController {
 
     public void serverStart(){
       //  server.start(Integer.parseInt(fieldPort.getText()));
+        log.info("Controller start");
         server.start();
     }
 
