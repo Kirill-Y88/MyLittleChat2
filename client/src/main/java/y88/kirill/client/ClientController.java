@@ -109,7 +109,7 @@ public class ClientController implements Initializable {
     }
 
     public void receivedMsg(String msg){
-        String addMsg = String.format("%s \n", msg);
+        String addMsg = String.format("%s", msg);
         textArea.appendText(addMsg);
     }
 

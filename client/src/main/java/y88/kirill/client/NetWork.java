@@ -1,5 +1,9 @@
 package y88.kirill.client;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,6 +26,10 @@ public class NetWork {
     public void connect(String host, int port){
         try {
             socket = new Socket(host,port);
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Подсоединение прошло успешно", ButtonType.OK);
+                alert.showAndWait();
+            });
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             isConnect = true;

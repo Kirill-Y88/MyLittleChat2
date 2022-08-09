@@ -17,9 +17,8 @@ public class Server {
     private boolean startOn = false;
     private ServerController serverController;
     private static final Logger log = LoggerFactory.getLogger(Server.class);
+    private Thread thread;
 
-
-   // private Vector<ClientHandler> clients;
     private Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
 
 
@@ -28,28 +27,29 @@ public class Server {
         this.clients = new ConcurrentHashMap<>();;
     }
 
-    public void start(){
+    public void start(int port){
         startOn = true;
-        new Thread( () -> {
-        try {
-            serverSocket = new ServerSocket(PORT);
-           log.info("Server start");
-            while (startOn){
-                socket = serverSocket.accept();
-                log.info("Server: client Accept");
-                new ClientHandler(this, socket);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }finally {
+        thread = new Thread(() -> {
             try {
-                serverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                serverSocket = new ServerSocket(port);
+                log.info("Server start in port = " + port);
+                while (startOn){
+                    socket = serverSocket.accept();
+                    log.info("Server: client Accept");
+                    new ClientHandler(this, socket);
+                }
+            } catch (Exception e) {
+             //   e.printStackTrace();
+                log.info("Server: Interrupted function call: accept failed");
+            }finally {
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        }).start();
+        });
+        thread.start();
     }
 
     public void stop(){
@@ -59,6 +59,8 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        thread.interrupt();
+        log.info("Server: stop");
     }
 
     public void viewMsg(String msg){

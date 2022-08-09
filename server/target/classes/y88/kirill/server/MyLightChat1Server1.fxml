@@ -18,7 +18,7 @@
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label prefHeight="62.0" prefWidth="101.0" text=" № Port" />
-                              <TextField prefHeight="54.0" prefWidth="300.0" promptText="port" text="8188" />
+                              <TextField fx:id="fieldPort" prefHeight="54.0" prefWidth="300.0" promptText="port" text="8188"  />
                            </children>
                         </HBox>
                      </children>

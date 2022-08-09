@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
 public class ClientHandler {
 
     private Server server;
@@ -46,7 +47,6 @@ public class ClientHandler {
                      login = msg[1];
                      password = msg[2];
                      server.addClient(this);
-                  //   System.out.println("signin login = " + login + " pass = " + password);
                      log.info("signin login = " + login);
                  }else if(msg[0].equals(ParseMessage.SIGNOUT.getTitle())){
                      server.disconnectClient(this);
@@ -57,14 +57,12 @@ public class ClientHandler {
                      server.sendMsgTo(this,recipientLogin,msgTo);
                  }else if(msg[0].equals(ParseMessage.SENDALL.getTitle())){
                      String msgAll = msg[1];
-                   //  System.out.println("sendall user = " + this.login +  " msg = " + msgAll);
                      server.sendMsgAll(this, msgAll);
                  }else {
                      System.out.println("запрос нераспознан + login = " + login);
                  server.viewMsg(msg[0]);}
                 } catch (IOException e) {
                     log.error("Connection reset ");
-                    //e.printStackTrace();
                     break;
                 }
             }
@@ -78,7 +76,6 @@ public class ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public String getLogin() {
