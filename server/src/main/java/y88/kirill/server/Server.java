@@ -8,6 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class Server {
@@ -20,11 +23,14 @@ public class Server {
     private Thread thread;
 
     private Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
+    private ExecutorService executorService = Executors.newFixedThreadPool(20);
+
 
 
     public Server(ServerController serverController) {
         this.serverController = serverController;
-        this.clients = new ConcurrentHashMap<>();;
+        this.clients = new ConcurrentHashMap<>();
+
     }
 
     public void start(int port){
@@ -36,7 +42,7 @@ public class Server {
                 while (startOn){
                     socket = serverSocket.accept();
                     log.info("Server: client Accept");
-                    new ClientHandler(this, socket);
+                    new ClientHandler(this, socket, executorService);
                 }
             } catch (Exception e) {
              //   e.printStackTrace();
@@ -60,7 +66,9 @@ public class Server {
             e.printStackTrace();
         }
         thread.interrupt();
+        executorService.shutdown();
         log.info("Server: stop");
+
     }
 
     public void viewMsg(String msg){
@@ -73,6 +81,7 @@ public class Server {
     }
 
     public void disconnectClient(ClientHandler clientHandler){
+        clientHandler.closeTread();
         clients.remove(clientHandler.getLogin());
         sendMsgAll();
     }
