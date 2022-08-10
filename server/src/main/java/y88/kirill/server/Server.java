@@ -25,12 +25,9 @@ public class Server {
     private Map<String, ClientHandler> clients = new ConcurrentHashMap<>();
     private ExecutorService executorService = Executors.newFixedThreadPool(20);
 
-
-
     public Server(ServerController serverController) {
         this.serverController = serverController;
         this.clients = new ConcurrentHashMap<>();
-
     }
 
     public void start(int port){
