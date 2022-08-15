@@ -26,14 +26,6 @@ public class ServerController implements Initializable {
       //  serverStart();
     }
 
-    //todo выпилить
-    @FXML
-    protected void onHelloButtonClick() {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, fieldMsg.getText(), ButtonType.OK);
-            alert.showAndWait();
-        });
-    }
 
     @FXML
     private TextArea textArea;
